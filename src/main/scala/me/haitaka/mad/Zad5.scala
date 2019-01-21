@@ -87,6 +87,12 @@ object Zad5 {
     println(s"accuracy: $accuracy")
     println(s"recall: $recall")
     println(s"precision: $precision")
+    println(s"Num ${P+N}")
+    val errPos = (FP + FN).toDouble / (P + N)
+    println(s"err mean ${errPos}")
+    println(s"err dis ${errPos*(1-errPos)}")
+    val di = 1.96 * errPos*(1-errPos) / sqrt(P + N)
+    println(s"int (${errPos - di}; ${errPos + di})")
   }
 
   def main(args: Array[String]): Unit = {
