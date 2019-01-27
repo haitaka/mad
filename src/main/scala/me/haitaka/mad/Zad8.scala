@@ -17,11 +17,13 @@ object Zad8 {
     def print: Unit
   }
 
-  class Group(val l: Tree, val r: Tree) extends Tree {
+  class Group(val l: Tree, val r: Tree, val d: Metric) extends Tree {
     def elems = l.elems ++ r.elems
 
     override def print: Unit = {
-      println(s"n$id [shape=point];")
+      val q = "\""
+      val dist = d(l, r)
+      println(s"n$id [shape=square label=$q$dist$q];")
       println(s"n$id -> n${l.id}")
       l.print
       println(s"n$id -> n${r.id}")
@@ -34,9 +36,11 @@ object Zad8 {
 
     override def print: Unit = {
       val q = "\""
-      println(s"n$id [label=$q$x $y$q];")
+      println(s"n$id [label=$q$id: ($x $y)$q];")
     }
   }
+
+  type Metric = (Tree, Tree) => Double
 
 
   def d0(l1: Leaf, l2: Leaf): Double = sqrt(sqr(l1.x - l2.x) + sqr(l1.y - l2.y))
@@ -52,7 +56,7 @@ object Zad8 {
 
   val leafs = X1 zip X2 map {case (x, y) => new Leaf(x, y)}
 
-  def closest(s: Seq[Tree], d: (Tree, Tree) => Double): (Tree, Tree) = {
+  def closest(s: Seq[Tree], d: Metric): (Tree, Tree) = {
     val UNDEF = -1
     val closestTo = (s map (_ => UNDEF)).toArray
     for (i <- s.indices) {
@@ -73,12 +77,12 @@ object Zad8 {
     (s(wantedI), s(closestTo(wantedI)))
   }
 
-  def reduce(s: Seq[Tree], d: (Tree, Tree) => Double): Tree = s match {
+  def reduce(s: Seq[Tree], d: Metric): Tree = s match {
     case Nil => assert(false); null
     case Seq(t) => t
     case _ =>
       val cl = closest(s, d)
-      reduce((s diff cl.productIterator.toList) ++ Seq(new Group(cl._1, cl._2)), d)
+      reduce((s diff cl.productIterator.toList) ++ Seq(new Group(cl._1, cl._2, d)), d)
   }
 
   def main(args: Array[String]): Unit = {
@@ -86,7 +90,7 @@ object Zad8 {
     val tMax = reduce(leafs, dMax)
     val tMin = reduce(leafs, dMin)
 
-    tMin.print
+    tMax.print
 
     println("fin")
   }

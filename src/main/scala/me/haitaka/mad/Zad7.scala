@@ -2,6 +2,7 @@ package me.haitaka.mad
 
 import java.awt.Color
 
+import java.lang.Math._
 import Global._
 import breeze.linalg.linspace
 import breeze.plot.{Figure, plot, scatter}
