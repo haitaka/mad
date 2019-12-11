@@ -31,6 +31,8 @@ object Zad7 {
 
   val R2 = ESS / TSS
 
+  val r = ((X zip Y) map {case (x, y) => (x - mX) * (y - mY)}).sum / sqrt((X map (x => sqr(x - mX))).sum) / sqrt((Y map (y => sqr(y - mY))).sum)
+
   def main(args: Array[String]): Unit = {
     val f = Figure()
     val p = f.subplot(0)
@@ -44,11 +46,13 @@ object Zad7 {
     f.saveas(s"${Zad7.getClass.getSimpleName}.png")
 
     println(s"Y(X) = ${b0} + ${b1} * X + e")
-    println(s"cor: ${b1} ??")
+    println(s"cor: ${r} ??")
     println(s"det: ${R2}")
     println(s"mid err: ${mean(e map abs)}")
     println(s"err s2: ${s2}")
     println(s"pred(10): ${prediction(10)}")
+    println("e")
+    e foreach println
 
     println("fin")
   }

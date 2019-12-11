@@ -21,13 +21,14 @@ object Zad6 {
 
   val badRate = V / 100.0
 
-  val Pp = 1 - badRate
-  val Pm = badRate
+  val Pm = 1 - badRate
+  val Pp = badRate
 
-  val Lmp = income
-  val Lpm = lose
+  val Lpm = income
+  val Lmp = lose
 
-  def R(i: Int) = Lmp * Pp * (1 - TPR(i)) + Lpm * Pm * FPR(i)
+  //def R(i: Int) = Lmp * Pp * (1 - TPR(i)) + Lpm * Pm * FPR(i)
+  def R(i: Int) = Lpm * Pm * (1 - FPR(i)) - Lmp * Pp * (1- TPR(i))
 
 
   def main(args: Array[String]): Unit = {

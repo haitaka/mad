@@ -15,25 +15,6 @@ object Zad4 {
   def mu = DenseVector(mu1, mu2)
   def nu = DenseVector(v1, v2)
 
-  def sigmFun(i: Int, j: Int) = {
-    val (xI, muI) = if (i == 1) (X1, mu1) else (X2, mu2)
-    val (xJ, muJ) = if (j == 1) (X1, mu1) else (X2, mu2)
-
-    mean((0 until LEN1) map (_i => (xI(_i) - muI) * (xJ(_i) - muJ)))
-  }
-
-  def lambdFun(i: Int, j: Int) = {
-    val (xI, muI) = if (i == 1) (X1, v1) else (X2, v2)
-    val (xJ, muJ) = if (j == 1) (X1, v1) else (X2, v2)
-
-    mean((LEN1 until LEN1 + LEN2) map (_i => (xI(_i) - muI) * (xJ(_i) - muJ)))
-  }
-
-  val sigm = DenseMatrix((sigmFun(1, 1), sigmFun(1, 2)), (sigmFun(2, 1), sigmFun(2, 2)))
-  val lambd = DenseMatrix((lambdFun(1, 1), lambdFun(1, 2)), (lambdFun(2, 1), lambdFun(2, 2)))
-
-  val midSigm = (sigm + lambd) / 2.0
-
   def s(l: Int, j: Int, k: Int): Double = {
     val (data, mid1, mid2) = {
       val pairs = X1 zip X2
@@ -64,7 +45,7 @@ object Zad4 {
 
   val ap = w(1) / w(0)
   val bp = {
-    val (x0, y0) = proj(0)
+    val (x0, y0) = proj.head
     y0 - ap * x0
   }
   def yp(x: Double) = x * ap + bp
@@ -95,7 +76,7 @@ object Zad4 {
         case v if v > 0.0 => "+"
         case _ => "-"
       }})")
-    println(proj)
+    proj foreach println
 
     p += scatter(Seq(mu1), Seq(mu2), _ => 2, _ => Color.red, _ => "mu")
     p += scatter(Seq(v1), Seq(v2), _ => 2, _ => Color.blue, _ => "nu")
